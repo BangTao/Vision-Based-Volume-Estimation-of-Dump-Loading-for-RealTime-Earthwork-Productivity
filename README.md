@@ -2,7 +2,8 @@
 
 This repository contains source code, raw data, and implementation details for the paper:
 
-**Automatic Vision-Based Volume Estimation of Dump Loading for Real-Time Earthwork Productivity Assessment and Management**  
+***Automatic Vision-Based Volume Estimation of Dump Loading for Real-Time Earthwork Productivity Assessment and Management***  
+
 (*Submitted to Automation in Construction*)
 
 ---
