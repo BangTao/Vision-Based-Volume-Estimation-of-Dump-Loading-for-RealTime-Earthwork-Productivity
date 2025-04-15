@@ -32,14 +32,14 @@ double computeConvexHullArea(const pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud)
 
 int main() 
 {
-    // ¶ÁÈ¡µãÔÆÊı¾İ
+    // è¯»å–ç‚¹äº‘æ•°æ®
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
     if (pcl::io::loadPCDFile<pcl::PointXYZ>("test.pcd", *cloud) == -1) 
     {
         PCL_ERROR("Couldn't read file.\n");
         return -1;
     }
-    // »®·ÖÎª0.5Ã×¼ä¸ôµÄ²ã
+    // åˆ’åˆ†ä¸º0.5ç±³é—´éš”çš„å±‚
     double height_interval ;
 
     std::cout << "Enter the height interval..." << std::endl;
@@ -49,7 +49,7 @@ int main()
     std::cout << "Enter the alpha value.." << std::endl;
     std::cin >> alpha;
 
-    // ¼ÆËãµãÔÆµÄz×ø±êµÄ×îĞ¡ºÍ×î´óÖµ
+    // è®¡ç®—ç‚¹äº‘çš„zåæ ‡çš„æœ€å°å’Œæœ€å¤§å€¼
     pcl::PointXYZ minPt, maxPt;
     pcl::getMinMax3D(*cloud, minPt, maxPt);
 
@@ -59,11 +59,11 @@ int main()
     double total_volume2 = 0;
     for (int i = 0; i < num_layers; ++i) 
     {
-        // ÉèÖÃµ±Ç°²ãµÄ¸ß¶È·¶Î§
+        // è®¾ç½®å½“å‰å±‚çš„é«˜åº¦èŒƒå›´
         double min_height = minPt.z + i * height_interval;
         double max_height = minPt.z + (i + 1) * height_interval;
 
-        // ÌáÈ¡ÔÚµ±Ç°¸ß¶È·¶Î§ÄÚµÄµãÔÆ
+        // æå–åœ¨å½“å‰é«˜åº¦èŒƒå›´å†…çš„ç‚¹äº‘
         pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
         for (size_t j = 0; j < cloud->points.size(); ++j) 
         {
@@ -76,14 +76,14 @@ int main()
         {
 
 
-            // ÌáÈ¡µãÔÆ
+            // æå–ç‚¹äº‘
             pcl::ExtractIndices<pcl::PointXYZ> extract;
             extract.setInputCloud(cloud);
             extract.setIndices(inliers);
             pcl::PointCloud<pcl::PointXYZ>::Ptr layer_cloud(new pcl::PointCloud<pcl::PointXYZ>);
             extract.filter(*layer_cloud);
 
-            // ¼ÆËã¶şÎ¬Í¹°ü
+            // è®¡ç®—äºŒç»´å‡¸åŒ…
             pcl::ConvexHull<pcl::PointXYZ> chull;
             chull.setInputCloud(layer_cloud);
             pcl::PointCloud<pcl::PointXYZ>::Ptr hull(new pcl::PointCloud<pcl::PointXYZ>);
@@ -91,22 +91,22 @@ int main()
 
 
             
-               // ´´½¨ Concave Hull ¶ÔÏó
+               // åˆ›å»º Concave Hull å¯¹è±¡
                pcl::ConcaveHull<pcl::PointXYZ> concave_hull;
 
-               // ÉèÖÃÊäÈëµãÔÆ
+               // è®¾ç½®è¾“å…¥ç‚¹äº‘
                concave_hull.setInputCloud(layer_cloud);
 
-               // ÉèÖÃ alpha ²ÎÊı£¨¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû£©
+               // è®¾ç½® alpha å‚æ•°ï¼ˆå¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´ï¼‰
                concave_hull.setAlpha(alpha);
 
-               // ¼ÆËã°¼°ü
+               // è®¡ç®—å‡¹åŒ…
                pcl::PointCloud<pcl::PointXYZ>::Ptr hull2(new pcl::PointCloud<pcl::PointXYZ>);
                concave_hull.reconstruct(*hull2);
 
                
 
-               // ¼ÆËãÍ¹°üµÄÃæ»ı
+               // è®¡ç®—å‡¸åŒ…çš„é¢ç§¯
             double area = computeConvexHullArea(hull);
             double area2 = computeConvexHullArea(hull2);
             //    std::cout << i << " layer area: " << area << std::endl;
